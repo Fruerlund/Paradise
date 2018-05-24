@@ -4,9 +4,6 @@
 //
 //
 */
-
-
-
 /datum/reagent/water
 	name = "Water"
 	id = "water"
@@ -122,6 +119,20 @@
 	if(volume >= 1 && istype(T))
 		T.MakeSlippery(TURF_WET_LUBE)
 
+/datum/reagent/luminol
+	name = "Luminol"
+	id = "luminol"
+	description = "A compound used to reveal hidden blood."
+	reagent_state = LIQUID
+	color = "#66FFFF"
+	taste_message = "blue."
+
+/datum/reagent/luminol/reaction_obj(obj/O, volume)
+	if(is_cleanable(O))
+		var/obj/effect/decal/cleanable/blood/B = O
+		if(!(istype(B) && B.off_floor))
+			B.luminoleffect(O)
+			return TRUE
 
 /datum/reagent/space_cleaner
 	name = "Space cleaner"
@@ -135,11 +146,14 @@
 	if(is_cleanable(O))
 		var/obj/effect/decal/cleanable/blood/B = O
 		if(!(istype(B) && B.off_floor))
-			qdel(O)
-	else
-		if(!istype(O, /atom/movable/lighting_overlay))
+			var/hiddenblood = rand(1,10)
+			if(hiddenblood < 4 & !B.hidden)
+				B.hideblood(O)
+			else
+				qdel(O)
+		else if(!istype(O, /atom/movable/lighting_overlay))
 			O.color = initial(O.color)
-		O.clean_blood()
+			O.clean_blood()
 
 /datum/reagent/space_cleaner/reaction_turf(turf/T, volume)
 	if(volume >= 1)
@@ -191,7 +205,6 @@
 					H.update_inv_shoes(0,0)
 		M.clean_blood()
 		..()
-
 
 /datum/reagent/blood
 	data = list("donor"=null,"viruses"=null,"blood_DNA"=null,"blood_type"=null,"blood_colour"="#A10808","resistances"=null,"trace_chem"=null,"mind"=null,"ckey"=null,"gender"=null,"real_name"=null,"cloneable"=null,"factions"=null)
@@ -279,6 +292,7 @@
 		if(!blood_prop)
 			blood_prop = new(T)
 			blood_prop.blood_DNA["UNKNOWN DNA STRUCTURE"] = "X*"
+
 
 /datum/reagent/vaccine
 	//data must contain virus type

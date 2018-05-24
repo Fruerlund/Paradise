@@ -23,6 +23,7 @@ var/global/list/image/splatter_cache=list()
 	appearance_flags = NO_CLIENT_COLOR
 	var/dry_timer = 0
 	var/off_floor = FALSE
+	var/hidden = 0
 
 /obj/effect/decal/cleanable/blood/New()
 	..()
@@ -66,6 +67,18 @@ var/global/list/image/splatter_cache=list()
 	desc = drydesc
 	color = adjust_brightness(color, -50)
 	amount = 0
+
+/obj/effect/decal/cleanable/blood/proc/hideblood(obj/effect/decal/cleanable/blood/B)
+	B.hidden = 1
+	B.invisibility = 101
+	B.color = "#66FFFF"
+	B.basecolor = "#66FFFF"
+	B.light_range = 2
+	B.light_color = "#66FFFF"
+
+/obj/effect/decal/cleanable/blood/proc/luminoleffect(obj/effect/decal/cleanable/blood/B)
+	B.hidden = 0
+	B.invisibility = 0
 
 /obj/effect/decal/cleanable/blood/attack_hand(mob/living/carbon/human/user)
 	..()

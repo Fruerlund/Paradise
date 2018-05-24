@@ -85,6 +85,15 @@
 	result_amount = 3
 	mix_message = "Ick, this stuff really stinks. Sure does make the container sparkle though!"
 
+/datum/chemical_reaction/luminol
+	name = "Luminol"
+	id = "luminol"
+	result = "luminol"
+	required_reagents = list("hydrogen" = 1, "water" = 1, "ethanol" = 2)
+	result_amount = 3
+	mix_message = "The mixture, turns bright blue."
+
+
 /datum/chemical_reaction/sulfuric_acid
 	name = "Sulfuric Acid"
 	id = "sacid"

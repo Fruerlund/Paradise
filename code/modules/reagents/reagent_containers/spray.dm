@@ -111,6 +111,12 @@
 	volume = 50
 	list_reagents = list("cleaner" = 50)
 
+// luminol spray
+/obj/item/reagent_containers/spray/luminol
+	name = "blood revealer"
+	desc = "Manofactured by NanoSec, used to reveal blood!"
+	list_reagents = list("luminol" = 250)
+
 //pepperspray
 /obj/item/reagent_containers/spray/pepper
 	name = "pepperspray"

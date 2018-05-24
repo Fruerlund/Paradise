@@ -6,11 +6,13 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	materials = list(MAT_METAL=1000)
 
+	var/gunid = 0
 	var/mag_type = /obj/item/ammo_box/magazine/m10mm //Removes the need for max_ammo and caliber info
 	var/obj/item/ammo_box/magazine/magazine
 
 /obj/item/gun/projectile/New()
 	..()
+	gunid = rand(1, 100000)
 	if(!magazine)
 		magazine = new mag_type(src)
 	chamber_round()
@@ -32,7 +34,7 @@
 	if(eject_casing)
 		AC.loc = get_turf(src) //Eject casing onto ground.
 		AC.SpinAnimation(10, 1) //next gen special effects
-
+		AC.casingid = src.gunid
 	if(empty_chamber)
 		chambered = null
 	chamber_round()

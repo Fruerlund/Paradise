@@ -16,6 +16,7 @@
 	var/delay = 0								//Delay for energy weapons
 	var/randomspread = 0						//Randomspread for automatics
 	var/click_cooldown_override = 0				//Override this to make your gun have a faster fire rate, in tenths of a second. 4 is the default gun cooldown.
+	var/casingid = 0
 
 /obj/item/ammo_casing/New()
 	..()
