@@ -1,0 +1,26 @@
+<!-- 
+Title: Cartridge Analyzer UI 
+Used In File(s): \code\modules\paperwork\faxmachine.dm
+-->
+<div class='item'>
+  <h2>Menu</h2>
+</div>
+<div class='item'>
+	<div class='itemLabel'>
+		Eject Contents:
+	</div>
+	<div class='itemContent'>
+		{{:helper.link('eject', {'eject' : 1})}}
+	</div>
+</div>
+<div class='item'>
+	<div class='itemLabel'>
+		Scan Contents:
+	</div>
+	<div class='itemContent'>
+		{{:helper.link(data.operating ? 'Analyze' : 'Scanning', {'scan' : 1})}}
+	</div>
+</div>
+<hr>
+
+ 

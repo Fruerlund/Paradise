@@ -25,6 +25,38 @@
 
 	return..()
 
+/obj/machinery/cartridgeanalyzer/attack_hand(mob/user)
+	ui_interact(user)
+
+/obj/machinery/cartridgeanalyzer/attack_ghost(mob/user)
+	ui_interact(user)
+
+/obj/machinery/cartridgeanalyzer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+	ui = SSnanoui.try_update_ui(user, src, ui_key, ui, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "cartridgeanalyzer.tmpl", "Cartridge Analyzer UI", 540, 450)
+		ui.open()
+
+/obj/machinery/cartridgeanalyzer/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
+
+	var/data[0]
+
+	if(operating)
+		data["operating"] = "Scanning"
+	else
+		data["operating"] = "Analyze"
+
+/obj/machinery/cartridgeanalyzer/Topic(href, href_list)
+	if(..())
+		return 1
+
+	if(href_list["scan"])
+
+		analyzecasings()
+
+	if(href_list["eject"])
+
+		eject()
 
 /obj/machinery/cartridgeanalyzer/attackby(obj/item/P, mob/user)
 
@@ -97,7 +129,7 @@
 		return FALSE
 
 	operating = 1
-	to_chat(usr, "The [src] starts scanning.")
+	to_chat(usr, "\The [src] starts scanning.")
 	spawn(50)
 
 	check_list()
@@ -113,17 +145,18 @@
 			var/obj/item/ammo_casing/A = P
 			compare_list += A.casingid
 
-	var/result = "Items scanned: [compare_list[1]], [compare_list[2]]"
+	var/result = "<b>Item A:	</b> [compare_list[1]]"
+	result += "<b>Item B:	</b>[compare_list[2]]"
 
 	if(compare_list[1] == compare_list[2])
 
 		playsound(src.loc, 'sound/machines/ping.ogg', 50, 1)
-		result += "Items Match Percentage: 100 % "
+		result += "<b>Match Percentage:	</b>: 100 % "
 
 	else
 
 		playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 1)
-		result += "Items Match Percentage: 0 % "
+		result += "<b>Match Percentage:	</b>: 0 % "
 
 	eject()
 	print_report(result)
@@ -133,12 +166,11 @@
 	usr.visible_message("<span class='warning'>[src] rattles and prints out a sheet of paper.</span>")
 	playsound(loc, 'sound/goonstation/machines/printer_thermal.ogg', 50, 1)
 
-	spawn(50)
-
 	var/obj/item/paper/P = new(get_turf(src))
 	P.name = "paper - Cartridge Analyzer Report: [station_time_timestamp()]"
-	P.info = "<center><b>Catridge Analyzer</b><br>Scan Analysis:</center><hr>"
-	P.info += "<b>Scan Conducted at: [station_time_timestamp()]:</b><br>"
+	P.info = "<large><center><b>Catridge Analyzerbr>Scan Analysis:</center><hr>"
+	P.info += "<b>Scan Conducted at:	 [station_time_timestamp()]</b><br>"
+	P.info += "<b>Scan by:</b>	 [usr]<br>"
 	P.info += datatoprint
 	P.info += "<hr><b>Notes:</b>"
 
